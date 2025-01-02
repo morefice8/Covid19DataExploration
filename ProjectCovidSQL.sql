@@ -127,13 +127,9 @@ from portfolioproject.coviddeaths as dea
 join portfolioproject.covidvaccins as vac
 	on  dea.location = vac.location
 	and dea.new_date_column = vac.new_date_column
-where dea.continent = 'Africa';
+where dea.continent not in ('');
 
-select dea.continent 
-from portfolioproject.coviddeaths as dea
-where dea.continent not in ('')
-group by dea.continent ;
-
+select * from percentpopulationvaccinated;
 
 
 -- Create Views to store data for later visualizations
