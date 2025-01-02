@@ -37,7 +37,15 @@ order by TotalDeathCount desc;
 
 select location, population , max(total_cases) as HighestInfectionCount,  max((total_cases/population))*100 as PercentPopulationInfected
 from portfolioproject.coviddeaths
--- Where location like '%states%'
 group by location, population
+order by PercentPopulationInfected desc;
+
+
+
+-- 4.
+
+select location, population, new_date_column, max(total_cases) as HighestInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
+From portfolioproject.coviddeaths
+Group by location, population, new_date_column
 order by PercentPopulationInfected desc;
 
