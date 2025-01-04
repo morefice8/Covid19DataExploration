@@ -1,8 +1,6 @@
 use portfolioproject;
 
--- Alter the existing table in order to convert the Date column from TEXT to DATE
--- ALTER TABLE coviddeaths DROP COLUMN new_date_column;
--- ALTER TABLE covidvaccins DROP COLUMN new_date_column;
+-- Alter the existing tables in order to convert the Date column from TEXT to DATE
 
 ALTER TABLE coviddeaths ADD COLUMN new_date_column DATE;
 
@@ -64,6 +62,8 @@ where continent not in ('')
 group by continent 
 order by TotalDeathCount desc;
 
+
+
 -- GLOBAL NUMBERS
 select new_date_column, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
 -- select new_date_column, sum(new_cases) as global_total_cases, sum(new_deaths) as global_total_deaths, (sum(new_deaths)/sum(new_cases))*100 as DeathPercentage
@@ -76,7 +76,7 @@ order by new_date_column asc;
 
 -- TABLE COVID VACCINATIONS : let's try to look at Total Population vs Vaccinations
 
--- Using table covidvaccins, let's see hot to compute a Rolling People Vaccinations (cumulative sum of new vaccines injected every day)
+-- Using table covidvaccins, let's see how to compute a Rolling People Vaccinations (cumulative sum of new vaccines injected every day)
 -- To check if the query is ok, let's filter on a single location
 select vac.continent, vac.location, vac.new_date_column,
 	vac.new_vaccinations, 
@@ -132,8 +132,52 @@ where dea.continent not in ('');
 select * from percentpopulationvaccinated;
 
 
--- Create Views to store data for later visualizations
 
+-- Create VIEWS to store data for later visualizations
+
+-- 1. Global Statistics
+create view GlobalStatistics as
+select sum(new_cases) as total_cases, sum(cast(new_deaths as int)) as total_deaths, sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage
+from portfolioproject.coviddeaths
+where continent not in ('')
+order by 1,2;
+
+select * from GlobalStatistics;
+
+
+-- 2. Total Number of Deaths by Continent
+create view TotalNumberDeathsContinent as 
+select location, sum(cast(new_deaths as int)) as TotalDeathCount
+from portfolioproject.coviddeaths
+where continent in ('') 
+	and location not in ('World', 'International') 
+	and location not like '%income%'
+	and location not like '%European%'
+group by location
+order by TotalDeathCount desc;
+
+select * from TotalNumberDeathsContinent;
+
+
+-- 3. Percentage of Population Infected by Country
+create view PercentagePopulationInfectedCountry as
+select location, population , max(total_cases) as HighestInfectionCount,  max((total_cases/population))*100 as PercentPopulationInfected
+from portfolioproject.coviddeaths
+group by location, population
+order by PercentPopulationInfected desc;
+
+select * from PercentagePopulationInfectedCountry;
+
+
+
+-- 4. Percentage of Population Infected
+create view PercentagePopulationInfected as
+select location, population, new_date_column, max(total_cases) as HighestInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
+From portfolioproject.coviddeaths
+Group by location, population, new_date_column
+order by PercentPopulationInfected desc;
+
+select * from PercentagePopulationInfected;
 
 
 

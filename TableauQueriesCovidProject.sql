@@ -32,7 +32,7 @@ order by PercentPopulationInfected desc;
 
 
 
--- 4. "Percentage of Population Infected
+-- 4. Percentage of Population Infected
 
 select location, population, new_date_column, max(total_cases) as HighestInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
 From portfolioproject.coviddeaths
