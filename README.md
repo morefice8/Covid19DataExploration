@@ -15,7 +15,7 @@ This project aims to analyze and derive meaningful insights from confirmed COVID
 In this project, we aim to provide a comprehensive analysis of COVID-19 data to extract valuable insights. The analysis covers various metrics such as infection rates, death rates, and the percentage of the population infected by the virus.
 
 ## Data Source
-The raw data used in this project is obtained from the Our World in Data website, which provides up-to-date and reliable data on COVID-19 confirmed cases and deaths.
+The raw data used in this project is obtained from the [Our World in Data](https://ourworldindata.org/) website, which provides up-to-date and reliable data on COVID-19 confirmed cases and deaths.
 
 ## Methodology
 The analysis is carried out using several MySQL queries to process and extract meaningful insights from the data. The key steps include:
