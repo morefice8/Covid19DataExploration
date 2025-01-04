@@ -1,13 +1,7 @@
-/*
-
-Queries used for Tableau Project
-
-*/
+/* Queries used for Tableau Project */
 
 
-
--- 1. 
-
+-- 1. Global Statistics
 select sum(new_cases) as total_cases, sum(cast(new_deaths as int)) as total_deaths, sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage
 from portfolioproject.coviddeaths
 where continent not in ('') 
@@ -16,10 +10,7 @@ order by 1,2;
 
 
 
--- 2. 
-
--- We take these out as they are not inluded in the above queries and want to stay consistent
--- European Union is part of Europe
+-- 2. Total Number of Deaths by Continent
 
 select location, sum(cast(new_deaths as int)) as TotalDeathCount
 from portfolioproject.coviddeaths
@@ -32,8 +23,7 @@ order by TotalDeathCount desc;
 
 
 
-
--- 3.
+-- 3. Percentage of Population Infected by Country
 
 select location, population , max(total_cases) as HighestInfectionCount,  max((total_cases/population))*100 as PercentPopulationInfected
 from portfolioproject.coviddeaths
@@ -42,7 +32,7 @@ order by PercentPopulationInfected desc;
 
 
 
--- 4.
+-- 4. "Percentage of Population Infected
 
 select location, population, new_date_column, max(total_cases) as HighestInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
 From portfolioproject.coviddeaths
